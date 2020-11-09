@@ -1,0 +1,13 @@
+title: 'Titre'  
+description: 'Description'
+surface: 'Surface'
+room: 'Chambre'
+bedrooms: 'Chambre_a_coucher'
+floor: 'Etage'
+price: Prix
+heat: Chauffage
+city: Ville
+address: Adresse
+postal_code: Code Postal
+sold: Solder
+        

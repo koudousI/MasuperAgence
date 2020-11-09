@@ -1,0 +1,21 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+Home:
+    path: /
+    controller: App\Controller\HomeController::index
+
+
+admin.property.index:
+    path: /admin
+    controller: App\Controller\Admin\AdminPropertyController::index
+
+
+admin.property.edit:
+    path: /admin/property/{id}
+    controller: App\Controller\Admin\AdminPropertyController::edit
+
+
+logout:
+  path: /logout
