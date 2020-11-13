@@ -21,7 +21,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class PropertyRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Property::class);
     }
@@ -63,13 +63,37 @@ class PropertyRepository extends ServiceEntityRepository
     /**
      * renvoie un QueryBuilder
      *
-     * @return QueryBuilder
+     * @return Query
      */
-    private function findVisibleQuery() 
+    private function findVisibleQuery(PropertySearch $search) 
     {
-        return $this->createQueryBuilder('p')
+        $query = $this->createQueryBuilder('p')
         ->andWhere('p.sold = false')
         ;
+
+        if ($search->getMaxPrice()) {
+            $query = $query
+                ->andWhere('p.price <= :maxprice')
+                ->setParameter('maxprice', $search->getMaxPrice());
+        }
+
+        if ($search->getMinSurface()) {
+            $query = $query
+                ->andWhere('p.surface >= :minsurface')
+                ->setParameter('minsurface', $search->getMinSurface());
+        }
+
+        if ($search->getOptions()->count() > 0) {
+            $k = 0;
+            foreach($search->getOptions() as $option) {
+                $k++;
+                $query = $query
+                    ->andWhere(":option$k MEMBER OF p.options")
+                    ->setParameter("option$k", $option);
+            }
+        }
+
+        return $query->getQuery();
     } 
 
 
